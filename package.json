@@ -24,6 +24,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"fabric-pure-browser": "^5.1.0"
+		"fabric": "^5.2.1"
 	}
 }

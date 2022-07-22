@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import { fabric } from "fabric-pure-browser";
+	import { fabric } from "fabric";
 
 	const products = [
 		{
