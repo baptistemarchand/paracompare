@@ -24,7 +24,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"fabric-pure-browser": "^5.1.0",
-		"jsdom": "^20.0.0"
+		"fabric-pure-browser": "^5.1.0"
 	}
 }
