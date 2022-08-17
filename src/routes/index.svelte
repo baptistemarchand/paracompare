@@ -24,7 +24,9 @@
 			weight: 2400,
             category: 2,
 			img: img_strike2,
-			brand: "Supair"
+			brand: "Supair",
+			rescueLink: "shoulders",
+			rescuePlacement: "ventral",
 		},
 		{
             label: "Stayup",
@@ -33,6 +35,8 @@
             category: 1,
 			img: img_stayup,
 			brand: "Neo",
+			rescueLink: "carabiners",
+			rescuePlacement: "ventral",
 		},
 		{
             label: "Kolibri",
@@ -41,6 +45,8 @@
             category: 3,
 			img: img_kolibri,
 			brand: "Kortel",
+			rescueLink: "carabiners",
+			rescuePlacement: "ventral",
 		},
 		{
             label: "GTO light 2",
@@ -49,6 +55,8 @@
             category: 3,
 			img: img_gto_light_2,
 			brand: "Woody Valley",
+			rescueLink: "shoulders",
+			rescuePlacement: "underseat",
 		},
 		{
             label: "Genie Lite 3",
@@ -57,6 +65,8 @@
             category: 3,
 			img: img_genie_lite_3,
 			brand: "Gin",
+			rescueLink: "shoulders",
+			rescuePlacement: "underseat",
 		},
 		{
             label: "Genie X-lite",
@@ -65,6 +75,8 @@
             category: 3,
 			img: img_genie_x_lite,
 			brand: "Gin",
+			rescueLink: "shoulders",
+			rescuePlacement: "underseat",
 		},
 		{
             label: "Suspender",
@@ -73,6 +85,8 @@
             category: 3,
 			img: img_suspender,
 			brand: "Neo",
+			rescueLink: "shoulders",
+			rescuePlacement: "underseat",
 		},
 		{
             label: "Delight 3",
@@ -81,6 +95,8 @@
             category: 3,
 			img: img_delight_3,
 			brand: "Supair",
+			rescueLink: "shoulders",
+			rescuePlacement: "underseat",
 		},
 		{
 			label: "Kanibal Race 2",
@@ -88,6 +104,8 @@
 			weight: 7500,
 			img: img_kanibal_race_2,
 			brand: "Kortel",
+			rescueLink: "shoulders",
+			rescuePlacement: "underseat",
 		},
 		{
 			label: "BV1",
@@ -95,6 +113,8 @@
 			weight: 2000,
 			img: img_bv1,
 			brand: "Ozone",
+			rescueLink: "shoulders",
+			rescuePlacement: "ventral",
 		},
 		{
 			label: "F* Race",
@@ -102,6 +122,8 @@
 			weight: 1500,
 			img: img_f_race,
 			brand: "Ozone",
+			rescueLink: "shoulders",
+			rescuePlacement: "ventral",
 		},
 		{
 			label: "Impress 4",
@@ -109,6 +131,8 @@
 			weight: 6600,
 			img: img_impress_4,
 			brand: "Advance",
+			rescueLink: "shoulders",
+			rescuePlacement: "underseat",
 		},
 		{
 			label: "Weightless",
@@ -116,6 +140,8 @@
 			weight: 2000,
 			img: img_weightless,
 			brand: "Advance",
+			rescueLink: "shoulders",
+			rescuePlacement: "underseat",
 		},
 		{
 			label: "Lightness 3",
@@ -123,6 +149,8 @@
 			weight: 3500,
 			img: img_lightness_3,
 			brand: "Advance",
+			rescueLink: "shoulders",
+			rescuePlacement: "underseat",
 		},
 	];
 
@@ -136,6 +164,8 @@
 	const minWeight = products.reduce((prev, curr) => curr.weight < prev ? curr.weight : prev, Infinity);
 	let priceFilter = maxPrice
 	let weightFilter = maxWeight
+	let mustHaveUnderseat = false
+	let mustHaveShoulderLinkRescue = false
     const WIDTH = 1400
     const HEIGHT = 800
 	let lines = []
@@ -145,11 +175,31 @@
 	 */
 	let canv;
 
-	const draw = () => {
+	const matchesFilters = (product) => {
+		if (mustHaveUnderseat && product.rescuePlacement !== 'underseat') {
+			return false
+		}
+		if (mustHaveShoulderLinkRescue && product.rescueLink !== 'shoulders') {
+			return false
+		}
+		if (product.price > priceFilter) {
+			return false 
+		}
+		if (product.weight > weightFilter) {
+			return false 
+		}
+		return true
+	}
+
+	const draw = (priceFilter, weightFilter, mustHaveUnderseat, mustHaveShoulderLinkRescue) => {
+		if (!canv || !products[0].object) {
+			return
+		}
+		console.log('drawing')
 		drawGrid()
 
 		for (const product of products) {
-			if (product.price <= priceFilter && product.weight <= weightFilter) {
+			if (matchesFilters(product)) {
 				product.object.visible = true
 			} else {
 				product.object.visible = false
@@ -164,6 +214,8 @@
 
 		canv.requestRenderAll()
 	};
+
+	$: draw(priceFilter, weightFilter, mustHaveUnderseat, mustHaveShoulderLinkRescue)
 
 	const priceToX = price => {
 		const priceRange = priceFilter - minPrice
@@ -280,11 +332,19 @@
 		<p class="text-xl pt-8 pb-2">Filters</p>
 		<div>
 			<label for="priceFilter">Max price:</label>
-			<input name="priceFilter" type="range" min={minPrice} max={maxPrice} step="10" bind:value={priceFilter} on:input={draw} />{priceFilter}€
+			<input name="priceFilter" type="range" min={minPrice} max={maxPrice} step="10" bind:value={priceFilter} />{priceFilter}€
 		</div>
 		<div>
 			<label for="weightFilter">Max weight:</label>
-			<input name="weightFilter" type="range" min={minWeight} max={maxWeight} step="10" bind:value={weightFilter} on:input={draw} />{weightFilter}g
+			<input name="weightFilter" type="range" min={minWeight} max={maxWeight} step="10" bind:value={weightFilter} />{weightFilter}g
+		</div>
+		<div>
+			<label for="mustHaveUnderseat">Must have underseat rescue:</label>
+			<input name="mustHaveUnderseat" type="checkbox" bind:checked={mustHaveUnderseat} />
+		</div>
+		<div>
+			<label for="mustHaveShoulderLinkRescue">Must have shoulder link rescue:</label>
+			<input name="mustHaveShoulderLinkRescue" type="checkbox" bind:checked={mustHaveShoulderLinkRescue} />
 		</div>
 	</div>
 
