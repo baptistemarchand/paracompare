@@ -212,6 +212,10 @@
 			product.object.bringToFront()
 		}
 
+		canv.getObjects().forEach((object) => {
+			object.selectable = false
+			object.hoverCursor = 'auto'
+		})
 		canv.requestRenderAll()
 	};
 
@@ -315,7 +319,10 @@
 		canv.add(weightArrow)
 
 		drawProducts()
-		
+		canv.getObjects().forEach((object) => {
+			object.selectable = false
+			object.hoverCursor = 'auto'
+		})
 	});
 
 </script>
