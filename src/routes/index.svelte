@@ -10,12 +10,15 @@
 	import img_genie_x_lite from '$lib/assets/genie-x-lite.png';
 	import img_suspender from '$lib/assets/suspender.png';
 	import img_delight_3 from '$lib/assets/delight-3.png';
+	import img_delight_4 from '$lib/assets/delight-4.png';
+	import img_delight_4_sport from '$lib/assets/delight-4-sport.png';
 	import img_kanibal_race_2 from '$lib/assets/kanibal-race-2.png';
 	import img_bv1 from '$lib/assets/bv1.png';
 	import img_f_race from '$lib/assets/f-race.png';
 	import img_impress_4 from '$lib/assets/impress-4.png';
 	import img_weightless from '$lib/assets/weightless.png';
 	import img_lightness_3 from '$lib/assets/lightness-3.png';
+	import img_grass_hopper from '$lib/assets/grass-hopper.png';
 
 	const products = [
 		{
@@ -99,6 +102,26 @@
 			rescuePlacement: "underseat",
 		},
 		{
+            label: "Delight 4",
+			price: 1590,
+			weight: 3770,
+            category: 3,
+			img: img_delight_4,
+			brand: "Supair",
+			rescueLink: "shoulders",
+			rescuePlacement: "underseat",
+		},
+		{
+            label: "Delight 4 Sport",
+			price: 1750,
+			weight: 3770,
+            category: 3,
+			img: img_delight_4_sport,
+			brand: "Supair",
+			rescueLink: "shoulders",
+			rescuePlacement: "underseat",
+		},
+		{
 			label: "Kanibal Race 2",
 			price: 2200,
 			weight: 7500,
@@ -151,6 +174,15 @@
 			brand: "Advance",
 			rescueLink: "shoulders",
 			rescuePlacement: "underseat",
+		},
+		{
+			label: "Grass Hopper",
+			price: 1590,
+			weight: 2600,
+			img: img_grass_hopper,
+			brand: "Little Cloud",
+			rescueLink: "carabiners",
+			rescuePlacement: "ventral",
 		},
 	];
 
