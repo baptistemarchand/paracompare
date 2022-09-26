@@ -201,6 +201,7 @@
     const WIDTH = 1400
     const HEIGHT = 800
 	let lines = []
+	let lineTexts = []
 
 	/**
 	 * @type {fabric.Canvas}
@@ -291,18 +292,39 @@
 
 	const drawGrid = () => {
 		canv.remove(...lines)
+		canv.remove(...lineTexts)
 		lines = []
+		lineTexts = []
 		for (let i = 2000; i < maxWeight; i+=1000) {
 			const line = new fabric.Line([0, weightToY(i), WIDTH, weightToY(i)], {stroke: '#eee'})
 			canv.add(line)
 			lines.push(line)
+			const text = new fabric.Text(`${i/1000}kg`, {
+				left: WIDTH - 75,
+				top: weightToY(i),
+				fontFamily: 'sans-serif',
+				fontSize: 12,
+				fill: '#777',
+				fontWeight: 'lighter',
+			});
+			canv.add(text)
+			lineTexts.push(text)
 		}
 		for (let i = 1000; i < maxPrice; i+=200) {
 			const line = new fabric.Line([priceToX(i), 0, priceToX(i), HEIGHT], {stroke: '#eee'})
 			canv.add(line)
 			lines.push(line)
+			const text = new fabric.Text(`${i}€`, {
+				left: priceToX(i),
+				top: 0,
+				fontFamily: 'sans-serif',
+				fontSize: 12,
+				fill: '#777',
+				fontWeight: 'lighter',
+			});
+			canv.add(text)
+			lineTexts.push(text)
 		}
-		// return new fabric.Group(lines)
 	}
 
 	const selectProduct = (product) => {
@@ -343,10 +365,10 @@
 		// canv.add(grid)
 		
 
-		const priceArrow = getArrow('PRICE')
+		const priceArrow = getArrow('PRIX')
 		priceArrow.set({left: 600})
 		canv.add(priceArrow)
-		const weightArrow = getArrow('WEIGHT')
+		const weightArrow = getArrow('POIDS')
 		weightArrow.set({angle: -90, left: WIDTH - 30})
 		canv.add(weightArrow)
 
@@ -362,27 +384,27 @@
 <div class="flex p-2">
 	<div class="grow mr-2">
 		<div class="border border-black p-2">
-			<div id="productName" class="text-3xl pb-2">Hover over an image to show details</div>
+			<div id="productName" class="text-3xl pb-2">Passer la souris sur un produit</div>
 			<div id="productPrice" class="text-xl"></div>
 			<div id="productWeight" class="text-xl"></div>
 			<div id="productBrand" class="text-xl"></div>
 	    </div>
 
-		<p class="text-xl pt-8 pb-2">Filters</p>
+		<p class="text-xl pt-8 pb-2">Filtres</p>
 		<div>
-			<label for="priceFilter">Max price:</label>
+			<label for="priceFilter">Prix max:</label>
 			<input name="priceFilter" type="range" min={minPrice} max={maxPrice} step="10" bind:value={priceFilter} />{priceFilter}€
 		</div>
 		<div>
-			<label for="weightFilter">Max weight:</label>
+			<label for="weightFilter">Poids max:</label>
 			<input name="weightFilter" type="range" min={minWeight} max={maxWeight} step="10" bind:value={weightFilter} />{weightFilter}g
 		</div>
 		<div>
-			<label for="mustHaveUnderseat">Must have underseat rescue:</label>
+			<label for="mustHaveUnderseat">Secours sous-cutal :</label>
 			<input name="mustHaveUnderseat" type="checkbox" bind:checked={mustHaveUnderseat} />
 		</div>
 		<div>
-			<label for="mustHaveShoulderLinkRescue">Must have shoulder link rescue:</label>
+			<label for="mustHaveShoulderLinkRescue">Secours relié aux épaules :</label>
 			<input name="mustHaveShoulderLinkRescue" type="checkbox" bind:checked={mustHaveShoulderLinkRescue} />
 		</div>
 	</div>
