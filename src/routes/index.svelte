@@ -198,10 +198,14 @@
 	let weightFilter = maxWeight
 	let mustHaveUnderseat = false
 	let mustHaveShoulderLinkRescue = false
-    const WIDTH = 1400
-    const HEIGHT = 800
+    let WIDTH = 1400
+    let HEIGHT = 800
 	let lines = []
 	let lineTexts = []
+	/**
+	 * @type {URLSearchParams}
+	 */
+	let urlParams
 
 	/**
 	 * @type {fabric.Canvas}
@@ -228,7 +232,9 @@
 		if (!canv || !products[0].object) {
 			return
 		}
-		console.log('drawing')
+		urlParams.set('maxPrice', `${priceFilter}`)
+		urlParams.set('maxWeight', `${weightFilter}`)
+		window.history.replaceState(null, null, `?${urlParams.toString()}`)
 		drawGrid()
 
 		for (const product of products) {
@@ -359,6 +365,17 @@
 	}
 
 	onMount(() => {
+		urlParams = new URLSearchParams(window.location.search)
+		if (urlParams.get('maxPrice')) {
+			priceFilter = parseInt(urlParams.get('maxPrice'), 10)
+		}
+		if (urlParams.get('maxWeight')) {
+			weightFilter = parseInt(urlParams.get('maxWeight'), 10)
+		}
+
+
+		WIDTH = window.innerWidth - 350
+		HEIGHT = window.innerHeight - 30
         canv = new fabric.Canvas(canvas, {width: WIDTH, height: HEIGHT, interactive: false, selection: false});
 		drawGrid()
 		// grid = getGrid()
