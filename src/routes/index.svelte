@@ -19,6 +19,7 @@
 	import img_weightless from '$lib/assets/weightless.png';
 	import img_lightness_3 from '$lib/assets/lightness-3.png';
 	import img_grass_hopper from '$lib/assets/grass-hopper.png';
+	import genie_race_4 from '$lib/assets/genie-race-4.png';
 
 	const products = [
 		{
@@ -183,6 +184,16 @@
 			brand: "Little Cloud",
 			rescueLink: "carabiners",
 			rescuePlacement: "ventral",
+		},
+		{
+            label: "Genie Race 4",
+			price: 1990,
+			weight: 8700,
+            category: 3,
+			img: genie_race_4,
+			brand: "Gin",
+			rescueLink: "shoulders",
+			rescuePlacement: "underseat",
 		},
 	];
 
