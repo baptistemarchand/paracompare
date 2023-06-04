@@ -20,6 +20,7 @@
 	import img_lightness_3 from '$lib/assets/lightness-3.png';
 	import img_grass_hopper from '$lib/assets/grass-hopper.png';
 	import genie_race_4 from '$lib/assets/genie-race-4.png';
+	import xr7 from '$lib/assets/xr7.png';
 
 	const products = [
 		{
@@ -195,6 +196,24 @@
 			rescueLink: "shoulders",
 			rescuePlacement: "underseat",
 		},
+		// {
+        //     label: "Bogdan classic",
+		// 	price: 680,
+		// 	weight: 1360,
+		// 	img: genie_race_4,
+		// 	brand: "BogdanFly",
+		// 	rescueLink: "carabiners",
+		// 	rescuePlacement: "ventral",
+		// },
+		{
+            label: "Xrated 7",
+			price: 2151,
+			weight: 7100,
+			img: xr7,
+			brand: "Woody Valley",
+			rescueLink: "shoulders",
+			rescuePlacement: "underseat",
+		},
 	];
 
 	/**
@@ -207,6 +226,7 @@
 	const minWeight = products.reduce((prev, curr) => curr.weight < prev ? curr.weight : prev, Infinity);
 	let priceFilter = maxPrice
 	let weightFilter = maxWeight
+	let weightFilterMin = minWeight
 	let mustHaveUnderseat = false
 	let mustHaveShoulderLinkRescue = false
     let WIDTH = 1400
@@ -236,15 +256,19 @@
 		if (product.weight > weightFilter) {
 			return false 
 		}
+		if (product.weight < weightFilterMin) {
+			return false 
+		}
 		return true
 	}
 
-	const draw = (priceFilter, weightFilter, mustHaveUnderseat, mustHaveShoulderLinkRescue) => {
+	const draw = (priceFilter, weightFilter, weightFilterMin, mustHaveUnderseat, mustHaveShoulderLinkRescue) => {
 		if (!canv || !products[0].object) {
 			return
 		}
 		urlParams.set('maxPrice', `${priceFilter}`)
 		urlParams.set('maxWeight', `${weightFilter}`)
+		urlParams.set('minWeight', `${weightFilterMin}`)
 		window.history.replaceState(null, null, `?${urlParams.toString()}`)
 		drawGrid()
 
@@ -269,16 +293,16 @@
 		canv.requestRenderAll()
 	};
 
-	$: draw(priceFilter, weightFilter, mustHaveUnderseat, mustHaveShoulderLinkRescue)
+	$: draw(priceFilter, weightFilter, weightFilterMin, mustHaveUnderseat, mustHaveShoulderLinkRescue)
 
 	const priceToX = price => {
 		const priceRange = priceFilter - minPrice
-		return (price-minPrice+5) / (priceRange+100) * WIDTH
+		return (price-minPrice+5) / (priceRange+110) * WIDTH
 	}
 
 	const weightToY = weight => {
-		const weightRange = weightFilter - minWeight
-		return HEIGHT - ((weight-minWeight+500) / (weightRange+600) * HEIGHT)
+		const weightRange = weightFilter - weightFilterMin
+		return HEIGHT - ((weight-weightFilterMin+500) / (weightRange+600) * HEIGHT)
 	}
 
 	const getArrow = (label) => {
@@ -383,6 +407,9 @@
 		if (urlParams.get('maxWeight')) {
 			weightFilter = parseInt(urlParams.get('maxWeight'), 10)
 		}
+		if (urlParams.get('minWeight')) {
+			weightFilterMin = parseInt(urlParams.get('minWeight'), 10)
+		}
 
 
 		WIDTH = window.innerWidth - 350
@@ -426,6 +453,10 @@
 		<div>
 			<label for="weightFilter">Poids max:</label>
 			<input name="weightFilter" type="range" min={minWeight} max={maxWeight} step="10" bind:value={weightFilter} />{weightFilter}g
+		</div>
+		<div>
+			<label for="weightFilterMin">Poids min:</label>
+			<input name="weightFilterMin" type="range" min={minWeight} max={maxWeight} step="10" bind:value={weightFilterMin} />{weightFilterMin}g
 		</div>
 		<div>
 			<label for="mustHaveUnderseat">Secours sous-cutal :</label>
